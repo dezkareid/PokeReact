@@ -1,0 +1,3 @@
+rootProject.name = 'PokeReact'
+
+include ':app'
