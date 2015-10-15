@@ -11,37 +11,58 @@ var {
   Image,
   Text,
   View,
+  ListView,
 } = React;
 
+
+
 var PokeReact = React.createClass({
+  
+  getInitialState: function() {
+    return {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
+      loaded: false,
+    };
+  },
+
   render: function() {
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
     return (
-      <View style={styles.container}>
-        <Image style={styles.thumbnail} source={{ uri: "http://vignette3.wikia.nocookie.net/battlefordreamislandfanfiction/images/4/4c/Pokeball.png"}}>
-        </Image>
-        <Text style={styles.welcome}>
-          This is the begin of the end
-        </Text>
-      </View>
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={this.renderMovie}
+        style={styles.listView} />
     );
+  },
+
+  componentDidMount: function() {
+    this.fetchData();
   }
 });
 
 var styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
   thumbnail: {
-    width: 81,
+    width: 53,
     height: 81,
+  },
+  rightContainer: {
+    flex: 1,
+  },
+  pokename: {
+    fontSize: 20,
+    marginBottom: 8,
+    textAlign: 'center',
   },
 });
 
